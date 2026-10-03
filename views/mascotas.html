@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Mascotas - PetExperts</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <!-- Iconos de Lucide -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="brand">
+            <i data-lucide="heart-pulse"></i> PetExperts
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="dashboard.html"><i data-lucide="layout-dashboard"></i> Inicio</a></li>
+            <li><a href="usuarios.html"><i data-lucide="shield"></i> Usuarios Internos</a></li>
+            <li><a href="clientes.html"><i data-lucide="users"></i> Clientes</a></li>
+            <li class="active"><a href="mascotas.html"><i data-lucide="dog"></i> Mascotas</a></li>
+            <li><a href="veterinarios.html"><i data-lucide="user-check"></i> Veterinarios</a></li>
+            <li><a href="citas.html"><i data-lucide="calendar"></i> Citas</a></li>
+            <li><a href="historial.html"><i data-lucide="file-text"></i> Historial Clínico</a></li>
+            <li><a href="servicios.html"><i data-lucide="briefcase"></i> Servicios</a></li>
+            <li><a href="inventario.html"><i data-lucide="package"></i> Farmacia</a></li>
+            <li style="margin-top: auto;"><a href="#" id="btnLogout" style="color: var(--danger);"><i data-lucide="log-out"></i> Cerrar Sesión</a></li>
+        </ul>
+    </aside>
+
+    <main class="main-content">
+        <header class="content-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <h1>REGISTRO DE MASCOTAS</h1>
+                <p style="color: var(--text-muted); font-size: 0.875rem;">Directorio de pacientes y control de fichas veterinarias</p>
+            </div>
+            <button class="btn-primary" onclick="abrirModalMascota()">
+                <i data-lucide="plus"></i> Registrar Mascota
+            </button>
+        </header>
+
+        <!-- Buscador y Filtros -->
+        <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+            <div class="input-group" style="max-width: 320px; position: relative;">
+                <i data-lucide="search" style="position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 18px; height: 18px;"></i>
+                <input type="text" id="buscarMascota" class="form-control" placeholder="Buscar por nombre o código..." style="padding-left: 2.75rem;" onkeyup="filtrarMascotas()">
+            </div>
+
+            <div style="max-width: 200px;">
+                <select id="filtroEspecie" class="form-control" onchange="filtrarMascotas()">
+                    <option value="">Todas las Especies</option>
+                    <option value="Perro">Perro</option>
+                    <option value="Gato">Gato</option>
+                    <option value="Otro">Otro</option>
+                </select>
+            </div>
+        </div>
+
+        <section class="data-table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>CÓDIGO</th>
+                        <th>NOMBRE</th>
+                        <th>ESPECIE / RAZA</th>
+                        <th>EDAD</th>
+                        <th>PROPIETARIO</th>
+                        <th>ACCIONES</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaMascotasBody">
+                    <!-- Carga dinámica vía JS -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- MODAL REGISTRO DE MASCOTA -->
+    <div id="modalMascota" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 style="font-size: 1.125rem; font-weight: 600;">Registrar Nueva Mascota</h3>
+                <button onclick="cerrarModalMascota()" style="background: none; border: none; cursor: pointer; color: var(--text-muted);"><i data-lucide="x"></i></button>
+            </div>
+            <form id="formMascota" onsubmit="guardarMascota(event)" class="modal-body">
+                <div class="form-group">
+                    <label>Nombre de la Mascota</label>
+                    <input type="text" id="nombreMascota" required class="form-control" placeholder="Ej: Bruno">
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Especie</label>
+                        <select id="especieMascota" class="form-control" required>
+                            <option value="Perro">Perro</option>
+                            <option value="Gato">Gato</option>
+                            <option value="Ave">Ave</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Raza</label>
+                        <input type="text" id="razaMascota" required class="form-control" placeholder="Ej: Caniche">
+                    </div>
+                </div>
+                <div style="display: flex; gap: 1rem;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Edad</label>
+                        <input type="text" id="edadMascota" required class="form-control" placeholder="Ej: 3 años">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Propietario / Cliente</label>
+                        <input type="text" id="propietarioMascota" required class="form-control" placeholder="Ej: Carlos Gómez">
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
+                    <button type="button" onclick="cerrarModalMascota()" style="padding: 0.625rem 1rem; border: 1px solid var(--border-color); background: white; border-radius: 0.5rem; cursor: pointer;">Cancelar</button>
+                    <button type="submit" class="btn-primary">Guardar Mascota</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/js/main.js"></script>
+    <script src="../assets/js/mascotas.js"></script>
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>
