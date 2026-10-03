@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Mascotas - Pet Expert's</title>
+    
+    <!-- Archivo CSS externo -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <!-- Iconos Lucide -->
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+    <!-- ESTE CONTENEDOR ES LA CLAVE PARA QUE EL DISEÑO NO SE ROMPA -->
+    <div class="layout-container">
+        
+        <!-- BARRA LATERAL ESTANDARIZADA -->
+        <aside class="sidebar" id="sidebar" data-active="mascotas"></aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            <header class="page-header" style="margin-bottom: 2rem;">
+                <h1 class="page-title">REGISTRO DE MASCOTAS</h1>
+                <p class="page-subtitle">Directorio de pacientes y control de fichas veterinarias</p>
+            </header>
+
+            <!-- BARRA DE ACCIONES (Buscador, Filtro y Botón) -->
+            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                
+                <div style="position: relative; flex-grow: 1; max-width: 350px;">
+                    <i data-lucide="search" style="position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 18px; height: 18px;"></i>
+                    <input type="text" id="buscarMascota" placeholder="Buscar por nombre o código..." style="width: 100%; padding: 0.65rem 1rem 0.65rem 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none;">
+                </div>
+
+                <select id="filtroEspecie" style="padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none; max-width: 200px;">
+                    <option value="">Todas las Especies</option>
+                    <option value="Perro">Perro</option>
+                    <option value="Gato">Gato</option>
+                    <option value="Otro">Otro</option>
+                </select>
+
+                <button onclick="abrirModalMascota()" style="margin-left: auto; display: flex; align-items: center; gap: 0.5rem; background-color: var(--brand-teal); color: white; padding: 0.65rem 1.25rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600;">
+                    <i data-lucide="plus"></i> Registrar Mascota
+                </button>
+            </div>
+
+            <!-- TABLA -->
+            <div class="table-card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>CÓDIGO</th>
+                            <th>NOMBRE</th>
+                            <th>ESPECIE / RAZA</th>
+                            <th>EDAD</th>
+                            <th>PROPIETARIO</th>
+                            <th style="text-align: center;">ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaMascotasBody">
+                        <!-- Ejemplo visual (Deberá llenarse dinámicamente con tu JS) -->
+                        <tr>
+                            <td><strong>PT-001</strong></td>
+                            <td>Bruno</td>
+                            <td>Perro / Caniche</td>
+                            <td>3 años</td>
+                            <td>Carlos Eduardo Martínez</td>
+                            <td style="text-align: center;">
+                                <button title="Editar" style="background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0.25rem;">
+                                    <i data-lucide="pencil" style="width: 18px; height: 18px;"></i>
+                                </button>
+                                <button title="Ver Ficha" style="background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0.25rem;">
+                                    <i data-lucide="file-text" style="width: 18px; height: 18px;"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL REGISTRO DE MASCOTA (Adaptado para coincidir con el diseño) -->
+    <div id="modalMascota" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.6); z-index: 1000; justify-content: center; align-items: center;">
+        <div class="modal-container" style="background: var(--card-bg); width: 100%; max-width: 600px; border-radius: 16px; padding: 2rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--text-dark);">Registrar Nueva Mascota</h3>
+                <button onclick="cerrarModalMascota()" style="background: none; border: none; cursor: pointer; color: var(--text-muted);"><i data-lucide="x"></i></button>
+            </div>
+            
+            <form id="formMascota">
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; font-weight: 500;">Nombre de la Mascota</label>
+                    <input type="text" id="nombreMascota" required placeholder="Ej: Bruno" style="width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none;">
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="flex: 1;">
+                        <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; font-weight: 500;">Especie</label>
+                        <select id="especieMascota" required style="width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none;">
+                            <option value="Perro">Perro</option>
+                            <option value="Gato">Gato</option>
+                            <option value="Ave">Ave</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; font-weight: 500;">Raza</label>
+                        <input type="text" id="razaMascota" required placeholder="Ej: Caniche" style="width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none;">
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="flex: 1;">
+                        <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; font-weight: 500;">Edad</label>
+                        <input type="text" id="edadMascota" required placeholder="Ej: 3 años" style="width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; font-weight: 500;">Propietario / Cliente</label>
+                        <input type="text" id="propietarioMascota" required placeholder="Ej: Carlos Gómez" style="width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none;">
+                    </div>
+                </div>
+                
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+                    <button type="button" onclick="cerrarModalMascota()" style="padding: 0.65rem 1rem; border: 1px solid var(--border-color); background: white; border-radius: 8px; cursor: pointer; color: var(--text-dark);">Cancelar</button>
+                    <button type="submit" style="padding: 0.65rem 1rem; border: none; background: var(--brand-teal); color: white; border-radius: 8px; cursor: pointer; font-weight: 600;">Guardar Mascota</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Asegúrate de tener las funciones abrirModalMascota() y cerrarModalMascota() en tu JS -->
+    <script src="../assets/js/core.js"></script>
+    <script src="../assets/js/mascotas.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Clientes - Pet Expert's</title>
+    
+    <!-- Archivo CSS externo (ESTO UNIFICA EL DISEÑO) -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <!-- Iconos Lucide -->
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+    <div class="layout-container">
+        
+        <!-- BARRA LATERAL (Idéntica al Dashboard y Usuarios) -->
+        <aside class="sidebar" id="sidebar" data-active="clientes"></aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            <header class="page-header" style="margin-bottom: 2rem;">
+                <h1 class="page-title">GESTIÓN DE CLIENTES (PROPIETARIOS)</h1>
+                <p class="page-subtitle">Administra la información de los dueños de mascotas registrados en la clínica.</p>
+            </header>
+
+            <!-- BARRA DE ACCIONES (Buscador y Botón Nuevo) -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <div style="position: relative; width: 350px;">
+                    <i data-lucide="search" style="position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 18px; height: 18px;"></i>
+                    <input type="text" placeholder="Buscar por nombre, DNI o teléfono..." style="width: 100%; padding: 0.65rem 1rem 0.65rem 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none;">
+                </div>
+                <button style="display: flex; align-items: center; gap: 0.5rem; background-color: var(--brand-teal); color: white; padding: 0.65rem 1.25rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600;">
+                    <i data-lucide="user-plus"></i> Registrar Cliente
+                </button>
+            </div>
+
+            <!-- TABLA -->
+            <div class="table-card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>DNI / Carnet</th>
+                            <th>NOMBRES Y APELLIDOS</th>
+                            <th>TELÉFONO</th>
+                            <th>CORREO ELECTRÓNICO</th>
+                            <th>MASCOTAS</th>
+                            <th style="text-align: center;">ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>72231966</strong></td>
+                            <td>Carlos Eduardo Martínez</td>
+                            <td>998-123-456</td>
+                            <td>carlos.mtz@email.com</td>
+                            <td><span class="badge badge-confirmada">2</span></td>
+                            <td style="text-align: center;">
+                                <button title="Editar" style="background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0.25rem;">
+                                    <i data-lucide="pencil" style="width: 18px; height: 18px;"></i>
+                                </button>
+                                <button title="Ver Historial" style="background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0.25rem;">
+                                    <i data-lucide="file-text" style="width: 18px; height: 18px;"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>45896321</strong></td>
+                            <td>Lucía Fernanda Gómez</td>
+                            <td>945-654-321</td>
+                            <td>luciagomez@email.com</td>
+                            <td><span class="badge badge-confirmada">1</span></td>
+                            <td style="text-align: center;">
+                                <button title="Editar" style="background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0.25rem;">
+                                    <i data-lucide="pencil" style="width: 18px; height: 18px;"></i>
+                                </button>
+                                <button title="Ver Historial" style="background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0.25rem;">
+                                    <i data-lucide="file-text" style="width: 18px; height: 18px;"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Inicializar iconos de Lucide -->
+    <script>
+        lucide.createIcons();
+    </script>
+<script src="../assets/js/core.js"></script>
+    </body>
+</html>

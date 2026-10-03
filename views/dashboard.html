@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control - Pet Expert's</title>
+    
+    <!-- Archivo CSS externo -->
+<link rel="stylesheet" href="../assets/css/main.css">    
+    <!-- Iconos Lucide -->
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+    <div class="layout-container">
+        <!-- BARRA LATERAL (SIDEBAR) -->
+        <aside class="sidebar" id="sidebar" data-active="dashboard"></aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            <header class="page-header">
+                <h1 class="page-title">PANEL DE CONTROL</h1>
+                <p class="page-subtitle">Resumen general de operaciones diarias</p>
+            </header>
+
+            <!-- TARJETAS DE MÉTRICAS -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div>
+                        <div class="kpi-title">Citas Hoy</div>
+                        <div class="kpi-value">12</div>
+                    </div>
+                    <div class="kpi-icon teal">
+                        <i data-lucide="calendar"></i>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div>
+                        <div class="kpi-title">Pacientes Atendidos</div>
+                        <div class="kpi-value">8</div>
+                    </div>
+                    <div class="kpi-icon teal">
+                        <i data-lucide="check-circle-2"></i>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div>
+                        <div class="kpi-title">Mascotas Registradas</div>
+                        <div class="kpi-value">145</div>
+                    </div>
+                    <div class="kpi-icon teal">
+                        <i data-lucide="paw-print"></i>
+                    </div>
+                </div>
+
+                <div class="kpi-card">
+                    <div>
+                        <div class="kpi-title" style="color: var(--brand-red);">Alertas de Stock</div>
+                        <div class="kpi-value" style="color: var(--brand-red);">3</div>
+                    </div>
+                    <div class="kpi-icon red">
+                        <i data-lucide="alert-triangle"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PRÓXIMAS CITAS DEL DÍA -->
+            <div class="table-card">
+                <div class="table-card-header">
+                    <h3>Próximas Citas del Día</h3>
+                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>HORA</th>
+                            <th>MASCOTA</th>
+                            <th>PROPIETARIO</th>
+                            <th>VETERINARIO</th>
+                            <th>ESTADO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>11:00 AM</strong></td>
+                            <td>Max (Siberiano)</td>
+                            <td>Ana Paredes</td>
+                            <td>Dr. Ramírez</td>
+                            <td><span class="badge badge-confirmada">Confirmada</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>11:45 AM</strong></td>
+                            <td>Michi (Siamés)</td>
+                            <td>Luis Vega</td>
+                            <td>Dra. Torres</td>
+                            <td><span class="badge badge-pendiente">Pendiente</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+<script src="../assets/js/core.js"></script>
+    </body>
+</html>

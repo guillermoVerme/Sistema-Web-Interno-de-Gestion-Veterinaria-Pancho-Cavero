@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial Clínico - PetExperts</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <!-- Iconos de Lucide -->
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+    <!-- CONTENEDOR PRINCIPAL QUE UNE EL SIDEBAR Y EL CONTENIDO -->
+    <div class="layout-container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar" id="sidebar" data-active="historial"></aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            <header class="content-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1>HISTORIAL CLÍNICO</h1>
+                    <p style="color: var(--text-muted); font-size: 0.875rem;">Registro de atenciones médicas, diagnósticos y tratamientos</p>
+                </div>
+                <button class="btn-primary" onclick="abrirModalHistorial()">
+                    <i data-lucide="plus"></i> Nueva Atención Médica
+                </button>
+            </header>
+
+            <!-- Buscador -->
+            <div style="margin-top: 1.5rem; margin-bottom: 1.5rem;">
+                <div class="input-group" style="max-width: 420px; position: relative;">
+                    <i data-lucide="search" style="position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 18px; height: 18px;"></i>
+                    <input type="text" id="buscarHistorial" class="form-control" placeholder="Buscar por paciente, diagnóstico o veterinario..." style="padding-left: 2.75rem;" onkeyup="filtrarHistorial()">
+                </div>
+            </div>
+
+            <section class="data-table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>FECHA</th>
+                            <th>PACIENTE</th>
+                            <th>DIAGNÓSTICO</th>
+                            <th>TRATAMIENTO</th>
+                            <th>VETERINARIO</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaHistorialBody">
+                        <!-- Carga dinámica vía JS -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+
+    </div> <!-- FIN DEL LAYOUT-CONTAINER -->
+
+    <!-- MODAL NUEVA ATENCIÓN MÉDICA -->
+    <div id="modalHistorial" class="modal-overlay">
+        <div class="modal-container" style="background: white; padding: 2rem; border-radius: 12px; width: 100%; max-width: 500px;">
+            <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.125rem; font-weight: 600;">Registrar Nueva Atención Médica</h3>
+                <button onclick="cerrarModalHistorial()" style="background: none; border: none; cursor: pointer; color: var(--text-muted);"><i data-lucide="x"></i></button>
+            </div>
+            <form id="formHistorial" onsubmit="guardarHistorial(event)" class="modal-body">
+                <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Fecha</label>
+                        <input type="date" id="fechaAtencion" required class="form-control">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Paciente / Mascota</label>
+                        <input type="text" id="pacienteAtencion" required class="form-control" placeholder="Ej: Bruno (Caniche)">
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label>Diagnóstico</label>
+                    <input type="text" id="diagnosticoAtencion" required class="form-control" placeholder="Ej: Otitis externa bilateral">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label>Tratamiento</label>
+                    <input type="text" id="tratamientoAtencion" required class="form-control" placeholder="Ej: Limpieza + Gotas antibióticas c/12h">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label>Veterinario Tratante</label>
+                    <select id="vetAtencion" class="form-control" required>
+                        <option value="Dr. Ramírez">Dr. Ramírez</option>
+                        <option value="Dra. Torres">Dra. Torres</option>
+                        <option value="Dr. Morales">Dr. Morales</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+                    <button type="button" onclick="cerrarModalHistorial()" style="padding: 0.625rem 1rem; border: 1px solid var(--border-color); background: white; border-radius: 0.5rem; cursor: pointer;">Cancelar</button>
+                    <button type="submit" class="btn-primary" style="padding: 0.625rem 1rem; background: var(--brand-teal); color: white; border: none; border-radius: 0.5rem; cursor: pointer;">Guardar Registro</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
+    <script src="../assets/js/core.js"></script>
+    
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios Internos - Pet Expert's</title>
+    
+    <!-- Archivo CSS externo (ESTO UNIFICA EL DISEÑO) -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <!-- Iconos Lucide -->
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+    <div class="layout-container">
+        
+        <!-- BARRA LATERAL (Idéntica al Dashboard) -->
+        <aside class="sidebar" id="sidebar" data-active="usuarios"></aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            <header class="page-header" style="margin-bottom: 2rem;">
+                <h1 class="page-title">USUARIOS INTERNOS</h1>
+                <p class="page-subtitle">Gestión del personal del sistema y roles de acceso</p>
+            </header>
+
+            <!-- BARRA DE ACCIONES (Buscador y Botón Nuevo) -->
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <div style="position: relative; width: 350px;">
+                    <i data-lucide="search" style="position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 18px; height: 18px;"></i>
+                    <input type="text" id="inputBuscar" placeholder="Buscar por DNI o Nombre..." style="width: 100%; padding: 0.65rem 1rem 0.65rem 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none;">
+                </div>
+                <button onclick="abrirModalNuevoUsuario()" style="display: flex; align-items: center; gap: 0.5rem; background-color: var(--brand-teal); color: white; padding: 0.65rem 1.25rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600;">
+                    <i data-lucide="user-plus"></i> Nuevo Usuario
+                </button>
+            </div>
+
+            <!-- TABLA -->
+            <div class="table-card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>DNI</th>
+                            <th>NOMBRE COMPLETO</th>
+                            <th>CORREO ELECTRÓNICO</th>
+                            <th>ROL</th>
+                            <th>ESTADO</th>
+                            <th style="text-align: center;">ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaUsuariosBody">
+                        <tr>
+                            <td><strong>72231966</strong></td>
+                            <td>Guillermo Antonio Manrique Verme</td>
+                            <td>manriquevermeguillermo@gmail.com</td>
+                            <td>Administrador</td>
+                            <td>
+                                <span style="background-color: #E6F7F9; color: var(--brand-teal); padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">Activo</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <button onclick="prepararEdicion('72231966')" title="Editar" style="background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0.25rem;">
+                                    <i data-lucide="pencil" style="width: 18px; height: 18px;"></i>
+                                </button>
+                                <button title="Eliminar" style="background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0.25rem;">
+                                    <i data-lucide="trash-2" style="width: 18px; height: 18px;"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL EMERGENTE -->
+    <div id="modalUsuario" class="modal-overlay">
+        <!-- Reutilizamos la clase modal-container del archivo main.css -->
+        <div class="modal-container">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 id="modalTitulo" style="font-size: 1.125rem; font-weight: 600;">Nuevo Usuario</h3>
+                <button onclick="cerrarModal()" style="background: none; border: none; cursor: pointer; color: var(--text-muted);"><i data-lucide="x"></i></button>
+            </div>
+            
+            <form id="formUsuario">
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem;">DNI</label>
+                    <input type="text" id="inputDni" placeholder="Ingrese DNI (8 dígitos)" maxlength="8" required style="width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none;">
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem;">Nombre Completo</label>
+                    <input type="text" id="inputNombre" placeholder="Nombres y Apellidos" required style="width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none;">
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem;">Correo Electrónico</label>
+                    <input type="email" id="inputCorreo" placeholder="correo@petexperts.com" required style="width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none;">
+                </div>
+
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem;">Rol de Usuario</label>
+                    <select id="selectRol" required style="width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none;">
+                        <option value="">Seleccione un rol...</option>
+                        <option value="Administrador">Administrador</option>
+                        <option value="Veterinario">Veterinario</option>
+                        <option value="Recepcionista">Recepcionista</option>
+                    </select>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;" id="grupoPassword">
+                    <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem;">Contraseña Temporal</label>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <!-- Se eliminó 'readonly' y se cambió el placeholder -->
+                        <input type="text" id="inputPassword" placeholder="Escribe una contraseña" required style="flex-grow: 1; padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none; background-color: #FFFFFF;">
+                        <button type="button" onclick="generarPasswordTemporal()" style="padding: 0.65rem 1rem; border: 1px solid var(--border-color); background: #F1F5F9; border-radius: 8px; cursor: pointer; font-weight: 600;">Generar</button>
+                    </div>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+                    <button type="button" onclick="cerrarModal()" style="padding: 0.65rem 1rem; border: 1px solid var(--border-color); background: white; border-radius: 8px; cursor: pointer;">Cancelar</button>
+                    <button type="submit" id="btnGuardarModal" style="padding: 0.65rem 1rem; border: none; background: var(--brand-teal); color: white; border-radius: 8px; cursor: pointer; font-weight: 600;">Guardar Usuario</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../assets/js/core.js"></script>
+    <script src="../assets/js/usuarios.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

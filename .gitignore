@@ -1,0 +1,11 @@
+# Dependencias y compilados: nunca se suben a Git
+node_modules/
+target/
+*.log
+.env
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+nbproject/

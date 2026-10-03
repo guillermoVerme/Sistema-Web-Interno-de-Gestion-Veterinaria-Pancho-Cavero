@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Veterinarios - Pet Expert's</title>
+    
+    <!-- Archivo CSS externo -->
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <!-- Iconos Lucide -->
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+    <!-- CONTENEDOR PRINCIPAL DEL LAYOUT -->
+    <div class="layout-container">
+        
+        <!-- BARRA LATERAL ESTANDARIZADA -->
+        <aside class="sidebar" id="sidebar" data-active="veterinarios"></aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+            <header class="page-header" style="margin-bottom: 2rem;">
+                <h1 class="page-title">GESTIÓN DE VETERINARIOS</h1>
+                <p class="page-subtitle">Directorio de profesionales médicos y control de especialidades</p>
+            </header>
+
+            <!-- BARRA DE ACCIONES (Buscador, Filtro y Botón) -->
+            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                
+                <div style="position: relative; flex-grow: 1; max-width: 350px;">
+                    <i data-lucide="search" style="position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 18px; height: 18px;"></i>
+                    <input type="text" id="buscarVeterinario" placeholder="Buscar por nombre o CMP..." style="width: 100%; padding: 0.65rem 1rem 0.65rem 2.5rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none;">
+                </div>
+
+                <select id="filtroEspecialidad" style="padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none; max-width: 220px;">
+                    <option value="">Todas las Especialidades</option>
+                    <option value="Cirugia">Cirugía General</option>
+                    <option value="MedicinaInterna">Medicina Interna</option>
+                    <option value="Dermatologia">Dermatología</option>
+                </select>
+
+                <button onclick="abrirModalVeterinario()" style="margin-left: auto; display: flex; align-items: center; gap: 0.5rem; background-color: var(--brand-teal); color: white; padding: 0.65rem 1.25rem; border-radius: 8px; border: none; cursor: pointer; font-weight: 600;">
+                    <i data-lucide="plus"></i> Registrar Veterinario
+                </button>
+            </div>
+
+            <!-- TABLA DE VETERINARIOS -->
+            <div class="table-card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>CMP / CÓDIGO</th>
+                            <th>NOMBRE COMPLETO</th>
+                            <th>ESPECIALIDAD</th>
+                            <th>TELÉFONO</th>
+                            <th>ESTADO</th>
+                            <th style="text-align: center;">ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaVeterinariosBody">
+                        <!-- Ejemplo visual (Se llenará dinámicamente con tu JS) -->
+                        <tr>
+                            <td><strong>VET-1042</strong></td>
+                            <td>Dra. Valeria Soto Mendoza</td>
+                            <td>Cirugía General</td>
+                            <td>+51 987 654 321</td>
+                            <td><span class="badge badge-activo">Activo</span></td>
+                            <td style="text-align: center;">
+                                <button title="Editar" style="background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0.25rem;">
+                                    <i data-lucide="pencil" style="width: 18px; height: 18px;"></i>
+                                </button>
+                                <button title="Ver Agenda" style="background: none; border: none; cursor: pointer; color: var(--text-muted); padding: 0.25rem;">
+                                    <i data-lucide="calendar" style="width: 18px; height: 18px;"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL REGISTRO DE VETERINARIO -->
+    <div id="modalVeterinario" class="modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.6); z-index: 1000; justify-content: center; align-items: center;">
+        <div class="modal-container" style="background: var(--card-bg); width: 100%; max-width: 600px; border-radius: 16px; padding: 2rem; box-shadow: 0 10px 25px rgba(0,0,0,0.1);">
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--text-dark);">Registrar Nuevo Veterinario</h3>
+                <button onclick="cerrarModalVeterinario()" style="background: none; border: none; cursor: pointer; color: var(--text-muted);"><i data-lucide="x"></i></button>
+            </div>
+            
+            <form id="formVeterinario">
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; font-weight: 500;">Nombre Completo</label>
+                    <input type="text" id="nombreVeterinario" required placeholder="Ej: Dr. Carlos Pérez" style="width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none;">
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="flex: 1;">
+                        <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; font-weight: 500;">N° de Colegiatura (CMP)</label>
+                        <input type="text" id="cmpVeterinario" required placeholder="Ej: VET-1050" style="width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; font-weight: 500;">Especialidad</label>
+                        <select id="especialidadVeterinario" required style="width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none;">
+                            <option value="Cirugia">Cirugía General</option>
+                            <option value="MedicinaInterna">Medicina Interna</option>
+                            <option value="Dermatologia">Dermatología</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+                    <div style="flex: 1;">
+                        <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; font-weight: 500;">Teléfono</label>
+                        <input type="tel" id="telefonoVeterinario" required placeholder="Ej: +51 999 888 777" style="width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none;">
+                    </div>
+                    <div style="flex: 1;">
+                        <label style="display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.25rem; font-weight: 500;">Correo Electrónico</label>
+                        <input type="email" id="emailVeterinario" required placeholder="Ej: carlos@petexperts.com" style="width: 100%; padding: 0.65rem; border-radius: 8px; border: 1px solid var(--border-color); outline: none;">
+                    </div>
+                </div>
+                
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+                    <button type="button" onclick="cerrarModalVeterinario()" style="padding: 0.65rem 1rem; border: 1px solid var(--border-color); background: white; border-radius: 8px; cursor: pointer; color: var(--text-dark);">Cancelar</button>
+                    <button type="submit" style="padding: 0.65rem 1rem; border: none; background: var(--brand-teal); color: white; border-radius: 8px; cursor: pointer; font-weight: 600;">Guardar Veterinario</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script del módulo -->
+    <script src="../assets/js/core.js"></script>
+    <script src="../assets/js/veterinarios.js"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Citas - PetExperts</title>
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <!-- Iconos de Lucide -->
+    <script src="https://unpkg.com/lucide@0.263.1/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+    <!-- CONTENEDOR PRINCIPAL QUE UNE EL SIDEBAR Y EL CONTENIDO -->
+    <div class="layout-container">
+
+        <!-- SIDEBAR COMPLETO -->
+        <aside class="sidebar" id="sidebar" data-active="citas"></aside>
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+
+
+<!-- Buscador, Filtros y Botón Nueva Cita en una sola línea integrada -->
+            <div style="display: flex; gap: 1rem; margin-top: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center;">
+                <div style="flex: 2; min-width: 240px; position: relative;">
+                    <i data-lucide="search" style="position: absolute; left: 0.875rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 18px; height: 18px;"></i>
+                    <input type="text" id="buscarCita" class="form-control" placeholder="Buscar mascota o propietario..." style="width: 100%; padding-left: 2.75rem;" onkeyup="filtrarCitas()">
+                </div>
+
+                <div style="flex: 1; min-width: 140px;">
+                    <input type="date" id="filtroFecha" class="form-control" style="width: 100%;" onchange="filtrarCitas()">
+                </div>
+
+                <div style="flex: 1; min-width: 170px;">
+                    <select id="filtroVeterinario" class="form-control" style="width: 100%;" onchange="filtrarCitas()">
+                        <option value="">Todos los Veterinarios</option>
+                        <option value="Dr. Ramírez">Dr. Ramírez</option>
+                        <option value="Dra. Torres">Dra. Torres</option>
+                        <option value="Dr. Morales">Dr. Morales</option>
+                    </select>
+                </div>
+
+                <div style="flex: 1; min-width: 150px;">
+                    <select id="filtroEstado" class="form-control" style="width: 100%;" onchange="filtrarCitas()">
+                        <option value="">Todos los Estados</option>
+                        <option value="Confirmada">Confirmada</option>
+                        <option value="En curso">En curso</option>
+                        <option value="Pendiente">Pendiente</option>
+                        <option value="Atendido">Atendido</option>
+                    </select>
+                </div>
+
+                <div>
+                    <button class="btn-primary" onclick="abrirModalCita()" style="white-space: nowrap; height: 100%;">
+                        <i data-lucide="plus"></i> Nueva Cita
+                    </button>
+                </div>
+            </div>
+
+            <section class="data-table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>HORA</th>
+                            <th>MASCOTA</th>
+                            <th>PROPIETARIO</th>
+                            <th>MOTIVO</th>
+                            <th>VETERINARIO</th>
+                            <th>ESTADO</th>
+                            <th>ACCIONES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaCitasBody">
+                        <!-- Carga dinámica vía JS -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+
+    </div> <!-- Cierre del layout-container -->
+
+    <!-- MODAL NUEVA CITA -->
+    <div id="modalCita" class="modal-overlay">
+        <div class="modal-container" style="background: white; padding: 2rem; border-radius: 12px; width: 100%; max-width: 500px;">
+            <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h3 style="font-size: 1.125rem; font-weight: 600;">Agendar Nueva Cita</h3>
+                <button onclick="cerrarModalCita()" style="background: none; border: none; cursor: pointer; color: var(--text-muted);"><i data-lucide="x"></i></button>
+            </div>
+            <form id="formCita" onsubmit="guardarCita(event)" class="modal-body">
+                <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Mascota</label>
+                        <input type="text" id="mascotaCita" required class="form-control" placeholder="Ej: Bruno (Caniche)">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Propietario</label>
+                        <input type="text" id="propietarioCita" required class="form-control" placeholder="Ej: Carlos Gómez">
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Fecha y Hora</label>
+                        <input type="time" id="horaCita" required class="form-control">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Veterinario</label>
+                        <select id="vetCita" class="form-control" required>
+                            <option value="Dr. Ramírez">Dr. Ramírez</option>
+                            <option value="Dra. Torres">Dra. Torres</option>
+                            <option value="Dr. Morales">Dr. Morales</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label>Motivo de la Cita</label>
+                    <input type="text" id="motivoCita" required class="form-control" placeholder="Ej: Consulta General / Vacunación">
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 0.5rem;">
+                    <button type="button" onclick="cerrarModalCita()" style="padding: 0.625rem 1rem; border: 1px solid var(--border-color); background: white; border-radius: 0.5rem; cursor: pointer;">Cancelar</button>
+                    <button type="submit" class="btn-primary" style="padding: 0.625rem 1rem; background: var(--brand-teal); color: white; border: none; border-radius: 0.5rem; cursor: pointer;">Agendar Cita</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    
+    <script src="../assets/js/core.js"></script>
+    <script src="../assets/js/citas.js"></script>
+    <script>
+        if (window.lucide) lucide.createIcons();
+    </script>
+</body>
+</html>
